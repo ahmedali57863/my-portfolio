@@ -115,329 +115,6 @@
 
 
 
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { TextGenerateEffect } from "./ui/text-generate-effect";
-import { FlipWords } from "./ui/flip-words";
-import { Button } from "./ui/stateful-button";
-
-// =======================
-// Copy Email Button
-// =======================
-const CopyEmailButton = () => {
-  const email = "ahmedali57863@gmail.com";
-  const [copied, setCopied] = useState(false);
-
-  const handleCopyEmail = () => {
-    return new Promise((resolve) => {
-      navigator.clipboard.writeText(email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-      setTimeout(resolve, 1000); // for stateful-button animation
-    });
-  };
-
-  return (
-    <Button
-      onClick={handleCopyEmail}
-      className="w-full px-4 py-2 text-xs text-white transition border rounded-full font-Pixelify2 sm:w-auto border-fuchsia-400/50 hover:bg-fuchsia-500 hover:text-black hover:shadow-lg hover:shadow-fuchsia-500/40"
-    >
-      {copied ? "Copied!" : "Copy Email"}
-    </Button>
-  );
-};
-
-// =======================
-// Floating 3D Elements
-// =======================
-const FloatingElements = () => {
-  const shapes = [
-    { id: 1, type: 'cube', size: 60, color: 'bg-gradient-to-br from-fuchsia-400 to-fuchsia-600', delay: 0 },
-    { id: 2, type: 'sphere', size: 80, color: 'bg-gradient-to-br from-purple-400 to-fuchsia-500', delay: 0.5 },
-    { id: 3, type: 'pyramid', size: 70, color: 'bg-gradient-to-br from-pink-400 to-fuchsia-600', delay: 1 },
-    { id: 4, type: 'cube', size: 45, color: 'bg-gradient-to-br from-fuchsia-300 to-purple-500', delay: 1.5 },
-    { id: 5, type: 'sphere', size: 55, color: 'bg-gradient-to-br from-pink-300 to-fuchsia-400', delay: 2 },
-    { id: 6, type: 'pyramid', size: 65, color: 'bg-gradient-to-br from-fuchsia-500 to-pink-600', delay: 2.5 },
-    { id: 7, type: 'cube', size: 40, color: 'bg-gradient-to-br from-purple-300 to-fuchsia-500', delay: 3 },
-    { id: 8, type: 'sphere', size: 90, color: 'bg-gradient-to-br from-fuchsia-200 to-purple-400', delay: 3.5 },
-  ];
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {shapes.map((shape) => (
-        <motion.div
-          key={shape.id}
-          className={`absolute ${shape.color} rounded-3xl shadow-2xl backdrop-blur-sm`}
-          style={{
-            width: shape.size,
-            height: shape.size,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            filter: 'blur(0.5px)',
-            opacity: 0.7,
-          }}
-          initial={{
-            opacity: 0,
-            scale: 0,
-            rotateX: 0,
-            rotateY: 0,
-            z: Math.random() * 100,
-          }}
-          animate={{
-            opacity: [0.3, 0.8, 0.3],
-            scale: [0.8, 1.2, 0.8],
-            rotateX: [0, 360],
-            rotateY: [0, 360],
-            x: [0, Math.random() * 200 - 100, 0],
-            y: [0, Math.random() * 200 - 100, 0],
-            z: [0, Math.random() * 200 - 100, 0],
-          }}
-          transition={{
-            duration: 8 + Math.random() * 4,
-            repeat: Infinity,
-            delay: shape.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-      
-      {/* Particle Grid */}
-      {Array.from({ length: 50 }).map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className="absolute w-1 h-1 rounded-full bg-fuchsia-400"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{
-            opacity: [0, 1, 0],
-            scale: [0, 1, 0],
-            x: [0, Math.random() * 100 - 50],
-            y: [0, Math.random() * 100 - 50],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 2,
-            repeat: Infinity,
-            delay: Math.random() * 5,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-// =======================
-// Morphing Background Blobs
-// =======================
-const MorphingBlobs = () => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <motion.div
-        className="absolute rounded-full w-96 h-96 bg-gradient-to-r from-fuchsia-300/30 to-purple-400/30 blur-3xl"
-        style={{ right: '10%', top: '20%' }}
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute rounded-full w-80 h-80 bg-gradient-to-r from-pink-300/20 to-fuchsia-400/20 blur-2xl"
-        style={{ right: '25%', bottom: '30%' }}
-        animate={{
-          scale: [1.2, 0.8, 1.2],
-          x: [0, -40, 0],
-          y: [0, 40, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2,
-        }}
-      />
-    </div>
-  );
-};
-
-// =======================
-// Hero Component
-// =======================
-const Hero = () => {
-  const words = [
-    "Web Interfaces",
-    "3D Visuals",
-    "Responsiveness",
-    "UI Animations",
-    "High-Performance",
-    "User Experience",
-  ];
-
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
-  return (
-    <section
-      id="hero"
-      className="relative flex flex-col-reverse items-center justify-between min-h-screen px-4 py-8 md:flex-row md:px-11 bg-gradient-to-b from-[#dab6d5] via-[#e2addd] to-[#f3aef0] overflow-hidden"
-      style={{
-        opacity: loaded ? 1 : 0,
-        transition: "opacity 0.8s ease-in-out",
-      }}
-    >
-      {/* Background Elements */}
-      <MorphingBlobs />
-      <FloatingElements />
-
-      {/* Left Text */}
-      <div className="z-20 flex flex-col justify-center flex-1 mt-4 space-y-3 text-center sm:mt-6 md:mt-0 md:text-left">
-        <motion.p 
-          className="text-xs text-gray-700 sm:text-sm md:text-base font-brshape"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Crafting digital experiences that captivate and inspire
-        </motion.p>
-
-        <motion.h1 
-          className="relative text-2xl font-bold text-black sm:text-3xl md:text-5xl lg:text-6xl"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-        >
-          <FlipWords words={words} />
-        </motion.h1>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <TextGenerateEffect
-            words="Transforming ideas into digital experiences. From smooth UI interactions and responsive designs to immersive 3D visuals and creative web animations, I build websites that are not just functional, but memorable. Websites focused on clean code, performance, and user-centered design to create digital experiences that engage, inspire, and leave a lasting impression."
-            className="font-light text-fuchsia-900 font-Pixelify"
-            textClassName="text-xs sm:text-sm md:text-base"
-          />
-        </motion.div>
-
-        <motion.div 
-          className="flex flex-col w-full gap-3 py-6 sm:flex-row sm:justify-start"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <a
-            href="mailto:ahmedali57863@gmail.com?subject=Hello&body=I%20want%20to%20hire%20you"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="w-full px-4 py-2 text-xs text-gray-700 transition border rounded-full font-Pixelify2 sm:w-auto border-fuchsia-400/50 hover:bg-fuchsia-500 hover:text-black hover:shadow-lg hover:shadow-fuchsia-500/40">
-              Hire Me
-            </button>
-          </a>
-          <CopyEmailButton />
-        </motion.div>
-      </div>
-
-      {/* Right Side 3D Scene */}
-      <div className="relative flex items-center justify-center flex-1 mb-8 md:mb-0">
-        <div className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[700px] h-[400px] sm:h-[500px] md:h-[600px] flex justify-center items-center">
-          {/* Central Interactive Element */}
-          <motion.div
-            className="relative z-10 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-            initial={{ scale: 0, rotate: 0 }}
-            animate={{ 
-              scale: 1, 
-              rotate: 360,
-              boxShadow: [
-                "0 0 0 0 rgba(236, 72, 153, 0.7)",
-                "0 0 0 20px rgba(236, 72, 153, 0)",
-                "0 0 0 0 rgba(236, 72, 153, 0)"
-              ]
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <div className="absolute inset-0 transform rotate-45 shadow-2xl bg-gradient-to-br from-fuchsia-400 via-purple-500 to-pink-600 rounded-3xl"></div>
-            <div className="absolute transform shadow-xl inset-2 bg-gradient-to-tl from-fuchsia-300 via-purple-400 to-pink-500 rounded-2xl -rotate-12"></div>
-            <div className="absolute transform shadow-lg inset-4 bg-gradient-to-r from-fuchsia-200 via-purple-300 to-pink-400 rounded-xl rotate-6"></div>
-          </motion.div>
-          
-          {/* Orbiting Elements */}
-          <motion.div
-            className="absolute w-16 h-16 rounded-full shadow-xl bg-gradient-to-br from-fuchsia-400 to-purple-600"
-            animate={{
-              rotate: 360,
-              x: [0, 120, 0, -120, 0],
-              y: [0, -120, 0, 120, 0],
-            }}
-            transition={{
-              duration: 12,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-          
-          <motion.div
-            className="absolute w-12 h-12 rounded-full shadow-lg bg-gradient-to-br from-pink-400 to-fuchsia-600"
-            animate={{
-              rotate: -360,
-              x: [0, -100, 0, 100, 0],
-              y: [0, 100, 0, -100, 0],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "linear",
-              delay: 1,
-            }}
-          />
-          
-          <motion.div
-            className="absolute w-8 h-8 rounded-full shadow-md bg-gradient-to-br from-purple-400 to-pink-600"
-            animate={{
-              rotate: 360,
-              x: [0, 80, 0, -80, 0],
-              y: [0, -80, 0, 80, 0],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "linear",
-              delay: 2,
-            }}
-          />
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default Hero;
-
-
-
-
-
-
-
 // GALAXY
 
 // "use client";
@@ -1059,3 +736,297 @@ export default Hero;
 // };
 
 // export default Hero;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { TextGenerateEffect } from "./ui/text-generate-effect";
+import { FlipWords } from "./ui/flip-words";
+import { Button } from "./ui/stateful-button";
+
+// =======================
+// Copy Email Button
+// =======================
+const CopyEmailButton = () => {
+  const email = "ahmedali57863@gmail.com";
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    return new Promise((resolve) => {
+      navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      setTimeout(resolve, 1000);
+    });
+  };
+
+  return (
+    <Button
+      onClick={handleCopyEmail}
+      className="w-full px-4 py-2 text-xs text-white transition border rounded-full font-Pixelify2 sm:w-auto border-fuchsia-400/50 hover:bg-fuchsia-500 hover:text-black hover:shadow-lg hover:shadow-fuchsia-500/40"
+    >
+      {copied ? "Copied!" : "Copy Email"}
+    </Button>
+  );
+};
+
+// =======================
+// Floating 3D Elements
+// =======================
+const FloatingElements = () => {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const particleCount = isMobile ? 15 : 40;
+  const shapeCount = isMobile ? 3 : 8;
+
+  const shapes = Array.from({ length: shapeCount }).map((_, i) => ({
+    id: i,
+    size: isMobile ? 40 : 70,
+    color: "bg-gradient-to-br from-fuchsia-400 to-purple-500",
+    delay: i * 0.5,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {shapes.map((shape) => (
+        <motion.div
+          key={shape.id}
+          className={`absolute ${shape.color} rounded-3xl will-change-transform`}
+          style={{
+            width: shape.size,
+            height: shape.size,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            opacity: 0.6,
+          }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{
+            opacity: [0.3, 0.7, 0.3],
+            scale: [0.8, 1.2, 0.8],
+            x: [0, Math.random() * 100 - 50, 0],
+            y: [0, Math.random() * 100 - 50, 0],
+          }}
+          transition={{
+            duration: isMobile ? 12 : 8,
+            repeat: Infinity,
+            delay: shape.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* Particle Grid */}
+      {Array.from({ length: particleCount }).map((_, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute w-1 h-1 rounded-full bg-fuchsia-400 will-change-transform"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{
+            opacity: [0, 1, 0],
+            scale: [0, 1, 0],
+            x: [0, Math.random() * 80 - 40],
+            y: [0, Math.random() * 80 - 40],
+          }}
+          transition={{
+            duration: isMobile ? 5 : 3,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// =======================
+// Morphing Background Blobs
+// =======================
+const MorphingBlobs = () => {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <motion.div
+        className={`absolute rounded-full ${
+          isMobile ? "w-64 h-64 blur-xl" : "w-96 h-96 blur-3xl"
+        } bg-gradient-to-r from-fuchsia-300/30 to-purple-400/30`}
+        style={{ right: "10%", top: "20%" }}
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, 40, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      {!isMobile && (
+        <motion.div
+          className="absolute rounded-full w-80 h-80 bg-gradient-to-r from-pink-300/20 to-fuchsia-400/20 blur-2xl"
+          style={{ right: "25%", bottom: "30%" }}
+          animate={{
+            scale: [1.2, 0.8, 1.2],
+            x: [0, -40, 0],
+            y: [0, 40, 0],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// =======================
+// Hero Component
+// =======================
+const Hero = () => {
+  const words = [
+    "Web Interfaces",
+    "3D Visuals",
+    "Responsiveness",
+    "UI Animations",
+    "High-Performance",
+    "User Experience",
+  ];
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  return (
+    <section
+      id="hero"
+      className="relative flex flex-col-reverse items-center justify-between min-h-screen px-4 py-8 md:flex-row md:px-11 bg-gradient-to-b from-[#dab6d5] via-[#e2addd] to-[#f3aef0] overflow-hidden"
+      style={{
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 0.8s ease-in-out",
+      }}
+    >
+      {/* Background Elements */}
+      <MorphingBlobs />
+      <FloatingElements />
+
+      {/* Left Text */}
+      <div className="z-20 flex flex-col justify-center flex-1 mt-4 space-y-3 text-center sm:mt-6 md:mt-0 md:text-left">
+        <motion.p
+          className="text-xs text-gray-700 sm:text-sm md:text-base font-brshape"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Crafting digital experiences that captivate and inspire
+        </motion.p>
+
+        <motion.h1
+          className="relative text-2xl font-bold text-black sm:text-3xl md:text-5xl lg:text-6xl"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+        >
+          <FlipWords words={words} />
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <TextGenerateEffect
+            words="Transforming ideas into digital experiences. From smooth UI interactions and responsive designs to immersive 3D visuals and creative web animations, I build websites that are not just functional, but memorable."
+            className="font-light text-fuchsia-900 font-Pixelify"
+            textClassName="text-xs sm:text-sm md:text-base"
+          />
+        </motion.div>
+
+        <motion.div
+          className="flex flex-col w-full gap-3 py-6 sm:flex-row sm:justify-start"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <a
+            href="mailto:ahmedali57863@gmail.com?subject=Hello&body=I%20want%20to%20hire%20you"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="w-full px-4 py-2 text-xs text-gray-700 transition border rounded-full font-Pixelify2 sm:w-auto border-fuchsia-400/50 hover:bg-fuchsia-500 hover:text-black hover:shadow-lg hover:shadow-fuchsia-500/40">
+              Hire Me
+            </button>
+          </a>
+          <CopyEmailButton />
+        </motion.div>
+      </div>
+
+      {/* Right Side 3D Scene */}
+      <div className="relative flex items-center justify-center flex-1 mb-8 md:mb-0">
+        <div className="relative w-full max-w-[280px] sm:max-w-[400px] md:max-w-[600px] h-[360px] sm:h-[500px] md:h-[600px] flex justify-center items-center">
+          <motion.div
+            className="relative z-10 w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 will-change-transform"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1, rotate: 360 }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div className="absolute inset-0 transform rotate-45 bg-gradient-to-br from-fuchsia-400 via-purple-500 to-pink-600 rounded-3xl"></div>
+            <div className="absolute inset-2 transform bg-gradient-to-tl from-fuchsia-300 via-purple-400 to-pink-500 rounded-2xl -rotate-12"></div>
+            <div className="absolute inset-4 transform bg-gradient-to-r from-fuchsia-200 via-purple-300 to-pink-400 rounded-xl rotate-6"></div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
